@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 48" width="220" height="48" role="img" aria-label="A+ Studio">
+  <title>A+ Studio</title>
+  <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 40 L20 8 L34 40"/>
+    <path d="M12 28 H28"/>
+    <path d="M44 24 H60 M52 16 V32"/>
+  </g>
+  <text x="74" y="31" font-family="Fraunces, Georgia, serif" font-size="22" font-weight="500" fill="currentColor" letter-spacing="0.5">A+ Studio</text>
+</svg>
