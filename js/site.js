@@ -43,7 +43,7 @@
           p.hidden = !match;
           if (match) shown++;
         });
-        if (status) status.textContent = shown + " project" + (shown === 1 ? "" : "s") + " shown";
+        if (status) status.textContent = (status.dataset.statusTemplate || "{n} shown").replace("{n}", shown);
       });
     });
   }
@@ -71,10 +71,75 @@
       if (form.dataset.demo === "true") {
         e.preventDefault();
         statusBox.hidden = false;
-        statusBox.textContent = "Thank you. This prototype does not send messages yet; once the form action is connected, your request will reach the studio.";
+        statusBox.textContent = form.dataset.demoMessage || "Thank you.";
         form.reset();
         statusBox.focus();
       }
     });
   }
+})();
+
+/* Motion: scroll reveal and stat count-up. Skipped entirely under prefers-reduced-motion. */
+(function () {
+  "use strict";
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+
+  var groups = [".grid > *", ".project-grid > *", ".notes-strip > *", ".steps > *", ".principles > *", ".stats > *", ".notes-list > *", ".faq > details", ".footer-grid > *"];
+  var singles = [".section-head", ".prose", ".figure", ".callout", ".quote", ".cta > *", ".contact-list", ".form", ".map", ".spec-list", ".split > *:not(.figure)"];
+
+  groups.forEach(function (sel) {
+    var items = document.querySelectorAll(sel);
+    var i = 0;
+    items.forEach(function (el) {
+      if (el.closest(".hero, .page-hero")) return;
+      el.setAttribute("data-reveal", "");
+      el.style.setProperty("--reveal-delay", Math.min(i, 7) * 70 + "ms");
+      i++;
+    });
+  });
+  singles.forEach(function (sel) {
+    document.querySelectorAll(sel).forEach(function (el) {
+      if (el.closest(".hero, .page-hero") || el.hasAttribute("data-reveal") || el.querySelector("[data-reveal]")) return;
+      el.setAttribute("data-reveal", "");
+    });
+  });
+
+  function countUp(el) {
+    var raw = el.textContent.trim();
+    var m = raw.match(/\d+/);
+    if (!m) return;
+    var target = parseInt(m[0], 10);
+    var prefix = raw.slice(0, m.index), suffix = raw.slice(m.index + m[0].length);
+    var start = performance.now(), dur = 900;
+    function tick(now) {
+      var p = Math.min(1, (now - start) / dur);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = prefix + Math.round(target * eased) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-in");
+      var v = entry.target.querySelector(".stat__value");
+      if (v && !v.dataset.counted) { v.dataset.counted = "1"; countUp(v); }
+      io.unobserve(entry.target);
+    });
+  }, { rootMargin: "0px 0px -8% 0px", threshold: 0 });
+
+  document.querySelectorAll("[data-reveal]").forEach(function (el) { io.observe(el); });
+
+  // Safety net: if observers have not fired (hidden tab, throttled browser), reveal what is on screen.
+  function sweep() {
+    document.querySelectorAll("[data-reveal]:not(.is-in)").forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.bottom > 0 && r.top < window.innerHeight) { el.classList.add("is-in"); io.unobserve(el); }
+    });
+  }
+  setTimeout(sweep, 1500);
+  window.addEventListener("scroll", function () { setTimeout(sweep, 400); }, { passive: true });
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) setTimeout(sweep, 100); });
 })();
