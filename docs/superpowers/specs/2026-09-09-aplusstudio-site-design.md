@@ -37,7 +37,7 @@ HTML, no build step, so the client can host it anywhere.
 - `css/site.css`: design tokens, layout, components. One file.
 - `js/site.js`: mobile nav drawer, active nav link, project filter,
   FAQ accordion, form validation feedback. No dependencies.
-- `assets/logo.svg`: wordmark placeholder, swap for the real logo.
+- `assets/logo.svg`: SVG redraw of the client's mark (sheared A, orange plus) with a "Studio" wordmark; `assets/logo-mark.svg` is the mark alone.
 - `assets/favicon.svg`.
 
 ## Design system
@@ -58,7 +58,7 @@ HTML, no build step, so the client can host it anywhere.
 
 Marked with `data-placeholder` in the HTML and listed in `README.md`:
 stats numbers, project names and images, phone, email, WhatsApp and
-Messenger links, address, form action, logo.
+Messenger links, address, form action.
 
 ## Out of scope
 

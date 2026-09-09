@@ -45,9 +45,12 @@ grep -rn 'data-placeholder' *.html
 | `form-action` | A form backend. Set `action` on `#contact-form` and remove `data-demo="true"` |
 | `map` | A map embed for the studio address |
 
-The logo in `assets/logo.svg` is a placeholder wordmark. Replace the file
-with the studio's logo, keeping the 220×48 viewBox or adjusting `.brand svg`
-height in `css/site.css`.
+The logo is an SVG redraw of the studio's mark: `assets/logo-mark.svg`
+holds the mark alone, `assets/logo.svg` adds the "Studio" wordmark and is
+inlined in the header and footer of every page. The A uses `currentColor`
+so it inverts on dark backgrounds; the plus stays brand orange `#F4511E`.
+If the client supplies vector artwork, replace the polygons in both files
+and re-copy the header and footer markup into each page.
 
 ## Design
 
