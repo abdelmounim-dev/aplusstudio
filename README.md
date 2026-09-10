@@ -55,7 +55,7 @@ grep -rn 'data-placeholder' *.html ar/*.html
 | `stat` | Real figures for the stats strip on the home page |
 | `project` | Real project names, locations, areas, outcomes, and photographs |
 | `portrait`, `bio`, `credential` | Photograph, biography, diploma and registration details |
-| `form-action` | A form backend. Set `action` on `#contact-form` and remove `data-demo="true"` |
+| `turnstile-sitekey` | Real Turnstile site key in `build/build.py` (`TURNSTILE_SITE_KEY`); the test key always passes |
 | `map` | A map embed for the studio address |
 
 The logo is an SVG redraw of the studio's mark: `assets/logo-mark.svg`
@@ -76,3 +76,42 @@ hover motion are transform and opacity only, and are disabled entirely under
 `prefers-reduced-motion`.
 
 Design notes: `docs/superpowers/specs/2026-09-09-aplusstudio-site-design.md`.
+
+## Deploy on Cloudflare Pages
+
+The contact form posts to `/api/contact`, a Pages Function in
+`functions/api/contact.js`. It validates the fields, checks the Turnstile
+token, and emails the studio through Resend. Cloudflare deploys the function
+with the site; no separate Worker is needed.
+
+1. In the Cloudflare dashboard create a Pages project from the GitHub repo.
+   Build command: empty. Output directory: `/`. `wrangler.toml` supplies the
+   rest.
+2. Create a Turnstile widget (Turnstile, Add site, domain of the Pages
+   project). Put the site key in `build/build.py` as `TURNSTILE_SITE_KEY`,
+   rebuild, and commit. Add the secret key to the project as
+   `TURNSTILE_SECRET_KEY`.
+3. Create a Resend account, verify the studio's domain, and add the API key
+   to the project as `RESEND_API_KEY`. Set the `CONTACT_TO` and
+   `CONTACT_FROM` variables in the dashboard or in `wrangler.toml`.
+
+Secrets can also be set from the terminal:
+
+```sh
+npx wrangler pages secret put RESEND_API_KEY
+npx wrangler pages secret put TURNSTILE_SECRET_KEY
+```
+
+Until `RESEND_API_KEY` is set the function logs the message and still
+reports success, so preview deployments can exercise the form. Until
+`TURNSTILE_SECRET_KEY` is set the token check is skipped.
+
+Local test with the real routing:
+
+```sh
+cp .dev.vars.example .dev.vars
+npx wrangler pages dev .
+```
+
+Then open <http://localhost:8788/contact.html>. The test keys in
+`.dev.vars.example` make Turnstile always pass.

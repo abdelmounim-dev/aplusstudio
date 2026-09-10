@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap">
   <link rel="stylesheet" href="../css/site.css">
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 <a class="skip-link" href="#main">انتقل إلى المحتوى</a>
@@ -59,7 +60,9 @@
 
 <section class="page-hero"><div class="container"><p class="eyebrow">اتصل بنا</p><h1>اطلب استشارة</h1><p class="lede">حدّثنا عن أرضك أو بيتك أو فكرتك. نرد خلال يومي عمل.</p></div></section>
 <section class="section"><div class="container split split--wide" style="align-items:start">
-  <form class="form" id="contact-form" action="#" method="post" data-demo="true" data-demo-message="شكراً لك. هذا النموذج الأولي لا يرسل الرسائل بعد؛ حين يُربط النموذج بالخادم سيصل طلبك إلى الاستوديو." novalidate data-placeholder="form-action">
+  <form class="form" id="contact-form" action="/api/contact" method="post" novalidate data-sending="جارٍ الإرسال…" data-network-error="تعذر إرسال الرسالة. تحقق من اتصالك وحاول مرة أخرى، أو استخدم واتساب." data-sent="شكراً لك. وصل طلبك إلى الاستوديو وسنرد خلال يومي عمل.">
+    <input type="hidden" name="lang" value="ar">
+    <p class="visually-hidden" aria-hidden="true"><label for="website">اترك هذا الحقل فارغاً</label><input id="website" name="website" type="text" tabindex="-1" autocomplete="off"></p>
     <div class="form-row">
       <div class="field"><label for="name">الاسم الكامل <span aria-hidden="true">*</span></label><input id="name" name="name" type="text" autocomplete="name" required><span class="error">يرجى إدخال اسمك.</span></div>
       <div class="field"><label for="phone">الهاتف <span aria-hidden="true">*</span></label><input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" dir="ltr" required><span class="hint">يمكننا الاتصال بك أو مراسلتك على واتساب.</span><span class="error">يرجى إدخال رقم هاتف.</span></div>
@@ -70,6 +73,7 @@
       <div class="field"><label for="service">ماذا تحتاج؟</label><select id="service" name="service"><option value="design">تصميم بيت جديد</option><option value="renovation">ترميم أو تحسين بيت قائم</option><option value="interior">تصميم داخلي أو مطبخ</option><option value="consulting">استشارة مناخية</option><option value="other">شيء آخر</option></select></div>
     </div>
     <div class="field"><label for="message">مشروعك <span aria-hidden="true">*</span></label><textarea id="message" name="message" required minlength="20"></textarea><span class="hint">مساحة القطعة، توجيهها إن كنت تعرفه، ما لديك الآن، وما تريد تغييره.</span><span class="error">يرجى وصف مشروعك في بضع جمل.</span></div>
+    <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-theme="light" data-language="ar" data-placeholder="turnstile-sitekey"></div>
     <div class="btn-row"><button class="btn btn--primary" type="submit">أرسل الطلب <svg class="flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
     <p class="form-status" id="form-status" role="status" tabindex="-1" hidden></p>
   </form>

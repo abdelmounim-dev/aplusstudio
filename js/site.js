@@ -48,10 +48,12 @@
     });
   }
 
-  // Contact form: validate on submit, show status. Replace the action in contact.html to wire a backend.
+  // Contact form: validate, then POST to the Pages Function at /api/contact.
+  // Without JS the browser posts the form itself and the function redirects back with ?sent=1 or ?error=...
   var form = document.getElementById("contact-form");
   if (form) {
     var statusBox = document.getElementById("form-status");
+    var submitBtn = form.querySelector('button[type="submit"]');
     var fields = form.querySelectorAll("[required]");
     function validate(input) {
       var wrap = input.closest(".field");
@@ -59,22 +61,51 @@
       if (wrap) wrap.dataset.invalid = String(!ok);
       return ok;
     }
+    function showStatus(text, isError) {
+      statusBox.hidden = false;
+      statusBox.textContent = text;
+      statusBox.dataset.state = isError ? "error" : "ok";
+      statusBox.focus();
+    }
+    function markServerErrors(names) {
+      (names || []).forEach(function (n) {
+        var el = form.elements[n];
+        var wrap = el && el.closest(".field");
+        if (wrap) wrap.dataset.invalid = "true";
+      });
+    }
     fields.forEach(function (f) { f.addEventListener("blur", function () { validate(f); }); });
+
+    // Result of a no-JS submission, delivered as a query string by the function.
+    var params = new URLSearchParams(location.search);
+    if (params.get("sent") === "1") showStatus(form.dataset.sent, false);
+    else if (params.get("error")) showStatus(form.dataset.networkError, true);
+
     form.addEventListener("submit", function (e) {
       var firstBad = null;
       fields.forEach(function (f) { if (!validate(f) && !firstBad) firstBad = f; });
-      if (firstBad) {
-        e.preventDefault();
-        firstBad.focus();
-        return;
-      }
-      if (form.dataset.demo === "true") {
-        e.preventDefault();
-        statusBox.hidden = false;
-        statusBox.textContent = form.dataset.demoMessage || "Thank you.";
-        form.reset();
-        statusBox.focus();
-      }
+      if (firstBad) { e.preventDefault(); firstBad.focus(); return; }
+      if (!window.fetch || !window.FormData) return; // plain POST, function redirects back
+      e.preventDefault();
+      var label = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.textContent = form.dataset.sending;
+      fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json", "X-Requested-With": "fetch" }
+      }).then(function (res) {
+        return res.json().then(function (json) { return { status: res.status, json: json }; });
+      }).then(function (r) {
+        if (r.json.ok) { form.reset(); showStatus(r.json.message, false); }
+        else { markServerErrors(r.json.errors); showStatus(r.json.message, true); }
+      }).catch(function () {
+        showStatus(form.dataset.networkError, true);
+      }).then(function () {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = label;
+        if (window.turnstile) { try { window.turnstile.reset(); } catch (err) {} }
+      });
     });
   }
 })();

@@ -27,6 +27,10 @@ FONTS = {
  "en": "https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Inter:wght@400;500;600&display=swap",
  "ar": "https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap",
 }
+# Cloudflare Turnstile site key. "1x00000000000000000000AA" is Cloudflare's always-pass test key;
+# replace it with the real site key from the Cloudflare dashboard before launch.
+TURNSTILE_SITE_KEY = "1x00000000000000000000AA"
+
 PLACEHOLDER = {"whatsapp":"https://wa.me/213000000000","messenger":"https://m.me/aplusstudio","phone":"+213000000000","phone_text":"+213 000 00 00 00","email":"hello@aplusstudio.dz","facebook":"https://www.facebook.com/","instagram":"https://www.instagram.com/"}
 
 # ---------- diagrams ----------
@@ -81,7 +85,7 @@ SKETCH = {
 }
 
 # ---------- shell ----------
-def shell_head(T, P, title, desc):
+def shell_head(T, P, title, desc, extra_head=""):
     lang, d = T["lang"], T["dir"]
     other = T["switch_href"]
     nav = "".join(f'        <li><a href="{h}">{t}</a></li>\n' for h,t in T["nav"])
@@ -97,7 +101,7 @@ def shell_head(T, P, title, desc):
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="{FONTS[lang]}">
-  <link rel="stylesheet" href="{P}css/site.css">
+  <link rel="stylesheet" href="{P}css/site.css">{extra_head}
 </head>
 <body>
 <a class="skip-link" href="#main">{T["skip"]}</a>
@@ -320,7 +324,9 @@ def build_pages(T):
     pages["contact.html"] = (c["title"], c["desc"], f'''
 <section class="page-hero"><div class="container"><p class="eyebrow">{T["nav"][6][1]}</p><h1>{c["h1"]}</h1><p class="lede">{c["lede"]}</p></div></section>
 <section class="section"><div class="container split split--wide" style="align-items:start">
-  <form class="form" id="contact-form" action="#" method="post" data-demo="true" data-demo-message="{f["demo_message"]}" novalidate data-placeholder="form-action">
+  <form class="form" id="contact-form" action="/api/contact" method="post" novalidate data-sending="{f["sending"]}" data-network-error="{f["network_error"]}" data-sent="{f["sent_message"]}">
+    <input type="hidden" name="lang" value="{T["lang"]}">
+    <p class="visually-hidden" aria-hidden="true"><label for="website">{f["honeypot_label"]}</label><input id="website" name="website" type="text" tabindex="-1" autocomplete="off"></p>
     <div class="form-row">
       <div class="field"><label for="name">{f["name"]} <span aria-hidden="true">*</span></label><input id="name" name="name" type="text" autocomplete="name" required><span class="error">{f["name_err"]}</span></div>
       <div class="field"><label for="phone">{f["phone"]} <span aria-hidden="true">*</span></label><input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" dir="ltr" required><span class="hint">{f["phone_hint"]}</span><span class="error">{f["phone_err"]}</span></div>
@@ -331,6 +337,7 @@ def build_pages(T):
       <div class="field"><label for="service">{f["service"]}</label><select id="service" name="service">{"".join(f'<option value="{v}">{l}</option>' for v,l in f["services"])}</select></div>
     </div>
     <div class="field"><label for="message">{f["message"]} <span aria-hidden="true">*</span></label><textarea id="message" name="message" required minlength="20"></textarea><span class="hint">{f["message_hint"]}</span><span class="error">{f["message_err"]}</span></div>
+    <div class="cf-turnstile" data-sitekey="{TURNSTILE_SITE_KEY}" data-theme="light" data-language="{T["lang"]}" data-placeholder="turnstile-sitekey"></div>
     <div class="btn-row"><button class="btn btn--primary" type="submit">{f["submit"]} {ICON["arrow"]}</button></div>
     <p class="form-status" id="form-status" role="status" tabindex="-1" hidden></p>
   </form>
@@ -353,8 +360,9 @@ def main():
         os.makedirs(outdir, exist_ok=True)
         for fname, (title, desc, body) in build_pages(T).items():
             T["switch_href"] = T["switch_prefix"] + fname
+            extra = '\n  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>' if fname == "contact.html" else ""
             with open(os.path.join(outdir, fname), "w") as fh:
-                fh.write(shell_head(T, prefix, title, desc) + body + foot(T, prefix))
+                fh.write(shell_head(T, prefix, title, desc, extra) + body + foot(T, prefix))
             print("wrote", os.path.relpath(os.path.join(outdir, fname), ROOT))
 
 if __name__ == "__main__":

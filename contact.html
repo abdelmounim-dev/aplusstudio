@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Inter:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="css/site.css">
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -59,7 +60,9 @@
 
 <section class="page-hero"><div class="container"><p class="eyebrow">Contact</p><h1>Request a consultation</h1><p class="lede">Tell us about your plot, your house, or your idea. We reply within two working days.</p></div></section>
 <section class="section"><div class="container split split--wide" style="align-items:start">
-  <form class="form" id="contact-form" action="#" method="post" data-demo="true" data-demo-message="Thank you. This prototype does not send messages yet; once the form action is connected, your request will reach the studio." novalidate data-placeholder="form-action">
+  <form class="form" id="contact-form" action="/api/contact" method="post" novalidate data-sending="Sending…" data-network-error="The message could not be sent. Please check your connection and try again, or use WhatsApp." data-sent="Thank you. Your request has reached the studio; we reply within two working days.">
+    <input type="hidden" name="lang" value="en">
+    <p class="visually-hidden" aria-hidden="true"><label for="website">Leave this field empty</label><input id="website" name="website" type="text" tabindex="-1" autocomplete="off"></p>
     <div class="form-row">
       <div class="field"><label for="name">Full name <span aria-hidden="true">*</span></label><input id="name" name="name" type="text" autocomplete="name" required><span class="error">Please enter your name.</span></div>
       <div class="field"><label for="phone">Phone <span aria-hidden="true">*</span></label><input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" dir="ltr" required><span class="hint">We can call or message you on WhatsApp.</span><span class="error">Please enter a phone number.</span></div>
@@ -70,6 +73,7 @@
       <div class="field"><label for="service">What do you need?</label><select id="service" name="service"><option value="design">New house design</option><option value="renovation">Renovation or retrofit</option><option value="interior">Interior or kitchen</option><option value="consulting">Bioclimatic consulting</option><option value="other">Something else</option></select></div>
     </div>
     <div class="field"><label for="message">Your project <span aria-hidden="true">*</span></label><textarea id="message" name="message" required minlength="20"></textarea><span class="hint">Plot size, orientation if you know it, what you have now, and what you want to change.</span><span class="error">Please describe your project in a few sentences.</span></div>
+    <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-theme="light" data-language="en" data-placeholder="turnstile-sitekey"></div>
     <div class="btn-row"><button class="btn btn--primary" type="submit">Send request <svg class="flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
     <p class="form-status" id="form-status" role="status" tabindex="-1" hidden></p>
   </form>
