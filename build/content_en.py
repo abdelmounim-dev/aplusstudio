@@ -1,6 +1,6 @@
-# English content for A+ Studio. Served under en/.
+# English content for A+ Studio. Served at the site root.
 T = {
- "lang": "en", "dir": "ltr", "alt_lang": "ar", "switch_prefix": "../", "switch_label": "عربي",
+ "lang": "en", "dir": "ltr", "alt_lang": "ar", "switch_prefix": "ar/", "switch_label": "عربي",
  "skip": "Skip to content", "home_label": "A+ Studio home", "nav_label": "Primary", "menu_label": "Open menu", "learn_more": "Learn more",
  "nav": [("index.html","Home"),("approach.html","Approach"),("services.html","Services"),("projects.html","Projects"),("field-notes.html","Field Notes"),("about.html","About"),("contact.html","Contact")],
  "cta": {"eyebrow":"Start a project","h2":"Tell us about your site, your climate, and how you want to live.","lede":"A first conversation costs nothing. We will tell you honestly whether a bioclimatic approach fits your plot and your budget.","primary":"Request a consultation","whatsapp":"WhatsApp"},

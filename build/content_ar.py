@@ -1,6 +1,6 @@
-# المحتوى العربي لموقع A+ Studio. يُنشر في جذر الموقع.
+# المحتوى العربي لموقع A+ Studio. يُنشر تحت ar/.
 T = {
- "lang": "ar", "dir": "rtl", "alt_lang": "en", "switch_prefix": "en/", "switch_label": "EN",
+ "lang": "ar", "dir": "rtl", "alt_lang": "en", "switch_prefix": "../", "switch_label": "EN",
  "skip": "انتقل إلى المحتوى", "home_label": "الصفحة الرئيسية لـ A+ Studio", "nav_label": "التنقل الرئيسي", "menu_label": "فتح القائمة", "learn_more": "اقرأ المزيد",
  "nav": [("index.html","الرئيسية"),("approach.html","منهجنا"),("services.html","خدماتنا"),("projects.html","مشاريعنا"),("field-notes.html","حلقات فضاء"),("about.html","عن الاستوديو"),("contact.html","اتصل بنا")],
  "cta": {"eyebrow":"ابدأ مشروعك","h2":"حدّثنا عن أرضك ومناخك وكيف تريد أن تعيش.","lede":"المحادثة الأولى مجانية. سنخبرك بصراحة إن كان التصميم المناخي يناسب قطعتك وميزانيتك.","primary":"اطلب استشارة","whatsapp":"واتساب"},

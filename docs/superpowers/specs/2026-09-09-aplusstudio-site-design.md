@@ -77,3 +77,10 @@ and `#C43E0E` (small text). Fonts: Archivo + Inter (en), Cairo (ar).
 Accents sheared 20°, guides in heroes, orange offset shadows on hover.
 Motion: hero rise-in, diagram line draw, scroll reveal with stagger,
 stat count-up, hover lifts. All gated by `prefers-reduced-motion`.
+
+## Revision 2026-09-10: no shear, English default
+
+The 20° sheared buttons, filters, markers, and eyebrow blocks were
+rejected as too angular. All components are now plain rectangles; hero
+guides are an orthogonal grid. English returns to the root and Arabic
+moves to `ar/`.

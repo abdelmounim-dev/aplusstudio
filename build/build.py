@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the A+ Studio site. Arabic at the repo root, English under en/.
+"""Generate the A+ Studio site. English at the repo root, Arabic under ar/.
 Run from anywhere: python3 build/build.py
 """
 import os, sys, importlib
@@ -62,11 +62,11 @@ def plan_svg(L):
   <circle cx="300" cy="200" r="22" class="thin" fill="none"/><circle cx="300" cy="200" r="12" class="thin" fill="none"/>
   <path d="M210 380 h140 M215 392 h130 M220 404 h120" class="sun"/>
   <path d="M40 300 q10 -8 20 0 q10 8 20 0 q10 -8 20 0 q10 8 20 0" class="leaf" fill="none"/>
-  <g><rect x="47" y="87" width="26" height="26" class="marker" transform="skewX(-20) translate(36 0)"/><text x="60" y="100" class="marker-text">1</text></g>
-  <g><rect x="287" y="137" width="26" height="26" class="marker" transform="skewX(-20) translate(54 0)"/><text x="300" y="150" class="marker-text">2</text></g>
-  <g><rect x="501" y="187" width="26" height="26" class="marker" transform="skewX(-20) translate(73 0)"/><text x="514" y="200" class="marker-text">3</text></g>
-  <g><rect x="267" y="379" width="26" height="26" class="marker" transform="skewX(-20) translate(143 0)"/><text x="280" y="392" class="marker-text">4</text></g>
-  <g><rect x="87" y="317" width="26" height="26" class="marker" transform="skewX(-20) translate(120 0)"/><text x="100" y="330" class="marker-text">5</text></g>
+  <g><circle cx="60" cy="100" r="13" class="marker"/><text x="60" y="100" class="marker-text">1</text></g>
+  <g><circle cx="300" cy="150" r="13" class="marker"/><text x="300" y="150" class="marker-text">2</text></g>
+  <g><circle cx="514" cy="200" r="13" class="marker"/><text x="514" y="200" class="marker-text">3</text></g>
+  <g><circle cx="280" cy="392" r="13" class="marker"/><text x="280" y="392" class="marker-text">4</text></g>
+  <g><circle cx="100" cy="330" r="13" class="marker"/><text x="100" y="330" class="marker-text">5</text></g>
   <text x="70" y="70" class="label">{L["plan_living"]}</text><text x="380" y="70" class="label">{L["plan_kitchen"]}</text><text x="70" y="310" class="label">{L["plan_patio"]}</text><text x="380" y="310" class="label">{L["plan_bedrooms"]}</text><text x="250" y="130" class="label">{L["plan_court"]}</text>
 </svg>'''
 
@@ -348,7 +348,7 @@ def build_pages(T):
     return pages
 
 def main():
-    for mod, outdir, prefix in [("content_ar", ROOT, ""), ("content_en", os.path.join(ROOT, "en"), "../")]:
+    for mod, outdir, prefix in [("content_en", ROOT, ""), ("content_ar", os.path.join(ROOT, "ar"), "../")]:
         T = importlib.import_module(mod).T
         os.makedirs(outdir, exist_ok=True)
         for fname, (title, desc, body) in build_pages(T).items():
