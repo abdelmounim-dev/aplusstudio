@@ -84,6 +84,41 @@ SKETCH = {
  "portrait": '<svg class="diagram" viewBox="0 0 400 480" aria-hidden="true"><rect x="40" y="40" width="320" height="400" class="thin" fill="none"/><circle cx="200" cy="180" r="60" class="thin" fill="none"/><path d="M110 400 C 110 300, 290 300, 290 400" class="thin" fill="none"/><path d="M60 60 h80 M60 75 h50" class="sun"/></svg>',
 }
 
+
+def day_svg(L):
+    """Full-stage section for the scroll-driven 'day in the house' hero. Dynamic parts carry ids."""
+    stars = "".join(f'<circle class="day-star" cx="{x}" cy="{y}" r="{r}"/>' for x,y,r in [(90,60,1.6),(160,110,1.2),(240,45,1.4),(330,90,1.1),(400,40,1.5),(470,120,1.2),(560,55,1.4),(640,100,1.1),(720,50,1.5),(800,95,1.2),(860,40,1.3),(300,140,1)])
+    pa = "".join(f'<circle class="day-p" r="3.2"/>' for _ in range(22))
+    pb = "".join(f'<circle class="day-p" r="3.2"/>' for _ in range(18))
+    return f'''<svg class="day-svg" viewBox="0 0 900 520" preserveAspectRatio="xMidYMid meet" role="img" aria-label="{L["aria"]}">
+  <g id="day-stars" class="day-stars">{stars}</g>
+  <path id="day-arc" d="M 80 430 A 370 370 0 0 1 820 430" fill="none" stroke="none"/>
+  <g id="day-sun" class="day-sun"><circle r="22"/><path d="M0 -34v-8M0 34v8M-34 0h-8M34 0h8M-24 -24l-6 -6M24 24l6 6M24 -24l6 -6M-24 24l-6 6"/></g>
+  <g id="day-moon" class="day-moon"><path d="M8 -20a22 22 0 1 0 0 40a16 16 0 1 1 0 -40z"/></g>
+  <line id="day-ray" class="day-ray" x1="0" y1="0" x2="790" y2="300"/>
+  <line x1="40" y1="440" x2="860" y2="440" class="wall"/>
+  <rect x="120" y="250" width="210" height="190" class="mass day-mass"/>
+  <rect x="520" y="210" width="240" height="230" class="mass day-mass"/>
+  <path d="M120 250 L225 185 L330 250" class="wall"/><path d="M520 210 L640 145 L760 210" class="wall"/>
+  <path d="M330 250 V440 M520 210 V440" class="wall"/><path d="M330 250 L520 210" class="wall"/>
+  <rect x="705" y="285" width="50" height="95" class="day-glass"/>
+  <rect id="day-shade" x="705" y="285" width="50" height="0" class="day-shade"/>
+  <path d="M760 280 h60 M760 298 h60 M760 316 h60 M760 334 h60 M760 352 h60" class="thin"/><path d="M760 268 h66 v96 h-66" class="thin"/>
+  <path d="M120 360 h-24 M120 385 h-24 M120 410 h-24" class="thin"/>
+  <rect x="365" y="345" width="120" height="95" fill="none" class="thin"/>
+  <path d="M380 440 q12 -38 0 -76 M405 440 q-10 -30 0 -64 M450 440 q12 -38 0 -76 M470 440 q-8 -26 0 -52" class="leaf" fill="none"/>
+  <circle cx="392" cy="358" r="7" class="leaf"/><circle cx="455" cy="362" r="8" class="leaf"/><circle cx="425" cy="380" r="6" class="leaf"/>
+  <path id="day-pathA" class="air" d="M50 400 Q110 400 180 398 T300 380 T370 330 T430 240 T440 160 T425 90"/>
+  <path id="day-pathB" class="air" d="M50 375 Q120 370 200 368 T320 350 T395 290 T425 210 T420 130 T400 70"/>
+  <g id="day-partA" class="day-parts">{pa}</g><g id="day-partB" class="day-parts">{pb}</g>
+  <g class="day-bars" transform="translate(40 130)">
+    <rect x="0" y="0" width="14" height="150" class="day-track"/><rect id="day-barOut" x="0" y="150" width="14" height="0" class="day-fill"/>
+    <rect x="30" y="0" width="14" height="150" class="day-track"/><rect id="day-barIn" x="30" y="150" width="14" height="0" class="day-fill day-fill--in"/>
+    <text x="0" y="172" class="label">{L["outside"]}</text><text x="30" y="188" class="label">{L["inside"]}</text>
+  </g>
+  <text x="96" y="470" class="label">{L["labels"]["l1"]}</text><text x="365" y="470" class="label">{L["labels"]["l2"]}</text><text x="700" y="470" class="label">{L["labels"]["l3"]}</text><text x="440" y="60" class="label">{L["labels"]["l4"]}</text>
+</svg>'''
+
 # ---------- shell ----------
 def shell_head(T, P, title, desc, extra_head=""):
     lang, d = T["lang"], T["dir"]
@@ -207,11 +242,24 @@ def build_pages(T):
     g = T["pages"]
     h = g["home"]
     pages["index.html"] = (h["title"], h["desc"], f'''
-<section class="hero"><div class="container hero__grid">
-  <div><p class="eyebrow">{h["eyebrow"]}</p><h1>{h["h1"]}</h1><p class="lede">{h["lede"]}</p>
-    <div class="btn-row"><a class="btn btn--primary" href="contact.html">{T["cta"]["primary"]} {ICON["arrow"]}</a><a class="btn btn--ghost" href="approach.html">{h["secondary"]}</a></div></div>
-  <figure class="hero__diagram">{H}</figure>
-</div></section>
+<section class="day" id="day" aria-label="{T["day"]["aria"]}">
+  <div class="day__stage">
+    <div class="day__progress" aria-hidden="true"><span id="day-progress"></span></div>
+    <div class="day__top">
+      <button type="button" class="day__thermal" id="day-thermal" aria-pressed="false" data-on="{T["day"]["thermal_on"]}" data-off="{T["day"]["thermal_off"]}">{T["day"]["thermal_on"]}</button>
+      <p class="day__clock"><span class="visually-hidden">{T["day"]["time_label"]}: </span><span id="day-time">06:00</span></p>
+    </div>
+    <div class="day__scene">{day_svg(T["day"])}</div>
+    <div class="day__captions" aria-live="polite">{"".join(f'<p class="day__caption" data-hour="{hr}"><time>{tm}</time>{txt}</p>' for hr,tm,txt in T["day"]["captions"])}</div>
+    <p class="day__hint" id="day-hint">{T["day"]["hint"]} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></p>
+    <div class="day__end" id="day-end">
+      <div class="container">
+        <p class="eyebrow">{h["eyebrow"]}</p><h1>{h["h1"]}</h1><p class="lede">{h["lede"]}</p>
+        <div class="btn-row"><a class="btn btn--primary" href="contact.html">{T["cta"]["primary"]} {ICON["arrow"]}</a><a class="btn btn--ghost" href="approach.html">{h["secondary"]}</a></div>
+      </div>
+    </div>
+  </div>
+</section>
 <section class="section section--grey section--tight"><div class="container stats">
   {"".join(f'<div class="stat" data-placeholder="stat"><div class="stat__value">{v}</div><div class="stat__label">{l}</div></div>' for v,l in h["stats"])}
 </div></section>
@@ -360,7 +408,9 @@ def main():
         os.makedirs(outdir, exist_ok=True)
         for fname, (title, desc, body) in build_pages(T).items():
             T["switch_href"] = T["switch_prefix"] + fname
-            extra = '\n  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>' if fname == "contact.html" else ""
+            extra = ""
+            if fname == "contact.html": extra = '\n  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>'
+            if fname == "index.html": extra = f'\n  <script src="{prefix}js/day.js" defer></script>'
             with open(os.path.join(outdir, fname), "w") as fh:
                 fh.write(shell_head(T, prefix, title, desc, extra) + body + foot(T, prefix))
             print("wrote", os.path.relpath(os.path.join(outdir, fname), ROOT))

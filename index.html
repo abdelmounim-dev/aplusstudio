@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Inter:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="css/site.css">
+  <script src="js/day.js" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -57,28 +58,51 @@
 </header>
 <main id="main" tabindex="-1">
 
-<section class="hero"><div class="container hero__grid">
-  <div><p class="eyebrow">Amine · A+ Studio · Algeria</p><h1>Houses that <em>breathe</em>, not houses that fight the climate.</h1><p class="lede">We design residential architecture for Algerian sun and Algerian nights. Courtyards, thick walls, calculated shade, and moving air do the work that machines usually do.</p>
-    <div class="btn-row"><a class="btn btn--primary" href="contact.html">Request a consultation <svg class="flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="btn btn--ghost" href="approach.html">How the house breathes</a></div></div>
-  <figure class="hero__diagram"><svg class="diagram" viewBox="0 0 560 380" role="img" aria-labelledby="hero-svg-title hero-svg-desc">
-  <title id="hero-svg-title">Cross-section of a courtyard house showing airflow</title><desc id="hero-svg-desc">Cool air enters through low openings on the shaded side, rises through the central courtyard, and exits through high vents. The sun is blocked by a brise-soleil on the south face.</desc>
-  <line x1="20" y1="330" x2="540" y2="330" class="wall"/>
-  <rect x="60" y="150" width="150" height="180" class="mass"/><rect x="350" y="120" width="150" height="210" class="mass"/>
-  <path d="M60 150 L135 95 L210 150" class="wall"/><path d="M350 120 L425 65 L500 120" class="wall"/>
-  <path d="M210 150 L210 330 M350 120 L350 330" class="wall"/><path d="M210 150 L350 120" class="wall"/>
-  <rect x="235" y="255" width="90" height="75" fill="none" class="thin"/>
-  <path d="M245 330 q10 -30 0 -60 M265 330 q-8 -24 0 -50 M300 330 q10 -30 0 -60 M315 330 q-6 -20 0 -40" class="leaf" fill="none"/>
-  <circle cx="255" cy="266" r="6" class="leaf"/><circle cx="305" cy="270" r="7" class="leaf"/><circle cx="280" cy="282" r="5" class="leaf"/>
-  <path d="M500 200 L540 200 M500 214 L540 214 M500 228 L540 228 M500 242 L540 242" class="thin"/><path d="M500 190 L545 190 L545 255 L500 255" class="thin"/>
-  <path d="M60 240 L40 240 M60 260 L40 260 M60 280 L40 280" class="thin"/>
-  <path d="M25 300 Q60 300 100 300 T175 290 T230 250 T280 190 T290 130 T280 60" class="air"/>
-  <path d="M25 275 Q70 270 130 270 T215 240 T255 200 T275 150 T268 100 T250 45" class="air"/>
-  <path d="M280 60 L270 70 M280 60 L290 70 M250 45 L241 56 M250 45 L262 52" class="air" stroke-dasharray="0"/>
-  <circle cx="500" cy="40" r="18" class="sun"/><path d="M500 10 v-6 M500 70 v6 M470 40 h-6 M530 40 h6 M479 19 l-4 -4 M521 61 l4 4 M521 19 l4 -4 M479 61 l-4 4" class="sun"/>
-  <path d="M485 62 L455 118 M498 66 L470 120 M472 55 L440 115" class="sun" stroke-dasharray="3 5" stroke-width="1.4"/>
-  <text x="30" y="355" class="label">Cool side · low inlets</text><text x="235" y="355" class="label">Courtyard · stack</text><text x="420" y="355" class="label">Brise-soleil · south</text><text x="25" y="40" class="label">Air out · high</text>
-</svg></figure>
-</div></section>
+<section class="day" id="day" aria-label="A day in a courtyard house: the sun moves, walls store and release heat, and air flows through the courtyard.">
+  <div class="day__stage">
+    <div class="day__progress" aria-hidden="true"><span id="day-progress"></span></div>
+    <div class="day__top">
+      <button type="button" class="day__thermal" id="day-thermal" aria-pressed="false" data-on="Thermal view" data-off="Line view">Thermal view</button>
+      <p class="day__clock"><span class="visually-hidden">Time of day: </span><span id="day-time">06:00</span></p>
+    </div>
+    <div class="day__scene"><svg class="day-svg" viewBox="0 0 900 520" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A day in a courtyard house: the sun moves, walls store and release heat, and air flows through the courtyard.">
+  <g id="day-stars" class="day-stars"><circle class="day-star" cx="90" cy="60" r="1.6"/><circle class="day-star" cx="160" cy="110" r="1.2"/><circle class="day-star" cx="240" cy="45" r="1.4"/><circle class="day-star" cx="330" cy="90" r="1.1"/><circle class="day-star" cx="400" cy="40" r="1.5"/><circle class="day-star" cx="470" cy="120" r="1.2"/><circle class="day-star" cx="560" cy="55" r="1.4"/><circle class="day-star" cx="640" cy="100" r="1.1"/><circle class="day-star" cx="720" cy="50" r="1.5"/><circle class="day-star" cx="800" cy="95" r="1.2"/><circle class="day-star" cx="860" cy="40" r="1.3"/><circle class="day-star" cx="300" cy="140" r="1"/></g>
+  <path id="day-arc" d="M 80 430 A 370 370 0 0 1 820 430" fill="none" stroke="none"/>
+  <g id="day-sun" class="day-sun"><circle r="22"/><path d="M0 -34v-8M0 34v8M-34 0h-8M34 0h8M-24 -24l-6 -6M24 24l6 6M24 -24l6 -6M-24 24l-6 6"/></g>
+  <g id="day-moon" class="day-moon"><path d="M8 -20a22 22 0 1 0 0 40a16 16 0 1 1 0 -40z"/></g>
+  <line id="day-ray" class="day-ray" x1="0" y1="0" x2="790" y2="300"/>
+  <line x1="40" y1="440" x2="860" y2="440" class="wall"/>
+  <rect x="120" y="250" width="210" height="190" class="mass day-mass"/>
+  <rect x="520" y="210" width="240" height="230" class="mass day-mass"/>
+  <path d="M120 250 L225 185 L330 250" class="wall"/><path d="M520 210 L640 145 L760 210" class="wall"/>
+  <path d="M330 250 V440 M520 210 V440" class="wall"/><path d="M330 250 L520 210" class="wall"/>
+  <rect x="705" y="285" width="50" height="95" class="day-glass"/>
+  <rect id="day-shade" x="705" y="285" width="50" height="0" class="day-shade"/>
+  <path d="M760 280 h60 M760 298 h60 M760 316 h60 M760 334 h60 M760 352 h60" class="thin"/><path d="M760 268 h66 v96 h-66" class="thin"/>
+  <path d="M120 360 h-24 M120 385 h-24 M120 410 h-24" class="thin"/>
+  <rect x="365" y="345" width="120" height="95" fill="none" class="thin"/>
+  <path d="M380 440 q12 -38 0 -76 M405 440 q-10 -30 0 -64 M450 440 q12 -38 0 -76 M470 440 q-8 -26 0 -52" class="leaf" fill="none"/>
+  <circle cx="392" cy="358" r="7" class="leaf"/><circle cx="455" cy="362" r="8" class="leaf"/><circle cx="425" cy="380" r="6" class="leaf"/>
+  <path id="day-pathA" class="air" d="M50 400 Q110 400 180 398 T300 380 T370 330 T430 240 T440 160 T425 90"/>
+  <path id="day-pathB" class="air" d="M50 375 Q120 370 200 368 T320 350 T395 290 T425 210 T420 130 T400 70"/>
+  <g id="day-partA" class="day-parts"><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/></g><g id="day-partB" class="day-parts"><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/><circle class="day-p" r="3.2"/></g>
+  <g class="day-bars" transform="translate(40 130)">
+    <rect x="0" y="0" width="14" height="150" class="day-track"/><rect id="day-barOut" x="0" y="150" width="14" height="0" class="day-fill"/>
+    <rect x="30" y="0" width="14" height="150" class="day-track"/><rect id="day-barIn" x="30" y="150" width="14" height="0" class="day-fill day-fill--in"/>
+    <text x="0" y="172" class="label">Outside</text><text x="30" y="188" class="label">Inside</text>
+  </g>
+  <text x="96" y="470" class="label">Cool side · low inlets</text><text x="365" y="470" class="label">Courtyard · stack</text><text x="700" y="470" class="label">Brise-soleil · south</text><text x="440" y="60" class="label">Air out · high</text>
+</svg></div>
+    <div class="day__captions" aria-live="polite"><p class="day__caption" data-hour="6"><time>06:00</time>The house wakes cool. Night air has flushed the walls.</p><p class="day__caption" data-hour="9"><time>11:00</time>The brise-soleil is cut to the summer sun angle. The glass stays in shade.</p><p class="day__caption" data-hour="13"><time>15:00</time>Outside peaks. The thick walls absorb; inside barely moves.</p><p class="day__caption" data-hour="17"><time>19:00</time>Sunset. Stored heat only now reaches the interior, as the air outside cools.</p><p class="day__caption" data-hour="21"><time>23:00</time>The house exhales. Warm air rises through the courtyard; cool night air enters low.</p><p class="day__caption" data-hour="27"><time>05:00</time>The mass is flushed. Ready for another day.</p></div>
+    <p class="day__hint" id="day-hint">Scroll to move through the day <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></p>
+    <div class="day__end" id="day-end">
+      <div class="container">
+        <p class="eyebrow">Amine · A+ Studio · Algeria</p><h1>Houses that <em>breathe</em>, not houses that fight the climate.</h1><p class="lede">We design residential architecture for Algerian sun and Algerian nights. Courtyards, thick walls, calculated shade, and moving air do the work that machines usually do.</p>
+        <div class="btn-row"><a class="btn btn--primary" href="contact.html">Request a consultation <svg class="flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="btn btn--ghost" href="approach.html">How the house breathes</a></div>
+      </div>
+    </div>
+  </div>
+</section>
 <section class="section section--grey section--tight"><div class="container stats">
   <div class="stat" data-placeholder="stat"><div class="stat__value">40+</div><div class="stat__label">Houses designed across Algeria</div></div><div class="stat" data-placeholder="stat"><div class="stat__value">8</div><div class="stat__label">Years of practice</div></div><div class="stat" data-placeholder="stat"><div class="stat__value">5</div><div class="stat__label">Climate zones worked in</div></div><div class="stat" data-placeholder="stat"><div class="stat__value">0</div><div class="stat__label">Imported one-size-fits-all plans</div></div>
 </div></section>

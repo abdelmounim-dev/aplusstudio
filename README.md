@@ -38,7 +38,7 @@ generated HTML with the source. Never hand-edit the HTML files.
 | `about.html` | Amine and the studio |
 | `contact.html` | Form, WhatsApp, Messenger, phone, email, map |
 
-Every page exists in both languages with the same file name. Shared files: `css/site.css`, `js/site.js`, `assets/logo.svg`, `assets/logo-mark.svg`, `assets/favicon.svg`.
+Every page exists in both languages with the same file name. Shared files: `css/site.css`, `js/site.js`, `assets/logo.svg`, `assets/logo-mark.svg`, `assets/favicon.svg`. The home page also loads `js/day.js`, which drives the scroll-driven "a day in the house" hero: scroll progress maps to the hour, the sun, wall heat, airflow, and captions follow, and a Thermal view toggle switches to a heat-map rendering. Under `prefers-reduced-motion` the hero is a static 15:00 frame with the captions listed.
 
 ## Placeholders to replace before launch
 

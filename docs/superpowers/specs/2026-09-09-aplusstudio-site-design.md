@@ -84,3 +84,31 @@ The 20° sheared buttons, filters, markers, and eyebrow blocks were
 rejected as too angular. All components are now plain rectangles; hero
 guides are an orthogonal grid. English returns to the root and Arabic
 moves to `ar/`.
+
+## Revision 2026-09-10: "A day in the house" hero
+
+Approved in chat. The home hero becomes a full-viewport, scroll-driven
+scene. Scrolling moves through 24 hours (06:00 to 06:00); the headline and
+CTA arrive at the end of the scroll. The sun tool is parked.
+
+Scene (SVG, line-drawn, same section as the Approach diagram, enlarged):
+- Sun travels an arc; altitude follows a half-sine over 13 daylight hours.
+- Brise-soleil shadow on the south glass grows with sun altitude.
+- Mass walls tint toward orange with a ~3 h lag behind the outside curve,
+  making thermal lag visible. Two qualitative bars, Outside and Inside,
+  show the outside curve and the damped, lagged inside curve. No numbers.
+- Air particles follow the two ventilation paths; speed follows stack
+  strength, low at midday and high at night.
+- Sky darkens after sunset and lightens before dawn; strokes invert.
+- Captions at six moments describe what the physics is doing.
+- Thermal toggle: a button switches to a heat-map rendering (orange = warm,
+  paper = cool) of the same state.
+
+Mechanics: a 400vh section with a sticky 100dvh stage. `js/day.js` maps
+scroll progress to the hour, updates SVG attributes and CSS variables in a
+requestAnimationFrame loop only while the section is on screen. Under
+`prefers-reduced-motion` the section is static at 15:00 with the captions
+listed below the scene. Labels come from the content modules; the scene
+does not mirror in RTL because the sun is physical.
+
+Out of scope: WebGL, canvas particle fields, measured temperatures.
